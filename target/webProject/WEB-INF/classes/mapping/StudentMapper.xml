@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzqweb.core.mapper.StudentMapper">
+
+    <resultMap id="BaseResultMap" type="com.hzqweb.core.entity.Student">
+        <result column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="SEX" property="sex" jdbcType="VARCHAR"/>
+        <result column="AGE" property="age" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getStudentByid" parameterType="com.hzqweb.core.entity.Student"
+            resultType="com.hzqweb.core.entity.Student">
+			select * from student where id=#{id}
+	</select>
+
+    <select id="getList" resultMap="BaseResultMap">
+		select * from student
+	</select>
+
+    <insert id="insertStudent" parameterType="com.hzqweb.core.entity.Student">
+        insert into student(name,sex,age) values (#{name},#{sex},#{age})
+    </insert>
+
+    <update id="updatePostData" parameterType="com.hzqweb.core.entity.Student">
+--         update student set ()
+    </update>
+
+
+</mapper>
