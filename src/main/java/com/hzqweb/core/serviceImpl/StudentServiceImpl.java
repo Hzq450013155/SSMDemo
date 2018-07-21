@@ -26,13 +26,16 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentMapper studentMapper;
 
-    public Student getStudentByid(Student student) {
-        return studentMapper.getStudentByid(student);
-    }
 
-    public List<Student> getList() {
-        logger.info("查询学生列表");
-        return studentMapper.getList();
+    public List<Student> getList(Student student) {
+        logger.info("===================查询学生列表=====================");
+        List list = null;
+        if (student.getId() == null) {
+            list = studentMapper.getList(student);
+        } else {
+            list = studentMapper.getListByid(student);
+        }
+        return list;
     }
 
     /*
@@ -43,8 +46,9 @@ public class StudentServiceImpl implements StudentService {
      * @return void
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void insertStudent(Student student) {
-        studentMapper.insertStudent(student);
+    public void insert(Student student) {
+        logger.info("===================新增学生=====================");
+        studentMapper.insert(student);
     }
 
     /*
@@ -55,7 +59,13 @@ public class StudentServiceImpl implements StudentService {
      * @return void
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void updateStudent(Student student) {
-        studentMapper.updateStudent(student);
+    public void update(Student student) {
+        logger.info("===================更新学生=====================");
+        studentMapper.update(student);
+    }
+
+    public void delete(Student student) {
+        logger.info("===================删除学生=====================");
+        studentMapper.delete(student);
     }
 }

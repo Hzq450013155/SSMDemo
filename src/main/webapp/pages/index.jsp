@@ -7,7 +7,7 @@
     <script src="static/js/JQuery.js" type="javascript"></script>
 </head>
 <body>
-<a href="/studentController?datagrid">aaaaaaaa</a>
+<a href="/studentController?getList">aaaaaaaa</a>
 <script>
 //     $.ajax({
 //         type: "post",

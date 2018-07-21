@@ -9,22 +9,25 @@
         <result column="AGE" property="age" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="getStudentByid" parameterType="com.hzqweb.core.entity.Student"
-            resultType="com.hzqweb.core.entity.Student">
+    <select id="getListById" parameterType="com.hzqweb.core.entity.Student" resultMap="BaseResultMap">
 			select * from student where id=#{id}
 	</select>
 
-    <select id="getList" resultMap="BaseResultMap">
+    <select id="getList" parameterType="com.hzqweb.core.entity.Student" resultMap="BaseResultMap">
 		select * from student
 	</select>
 
-    <insert id="insertStudent" parameterType="com.hzqweb.core.entity.Student">
+    <insert id="insert" parameterType="com.hzqweb.core.entity.Student">
         insert into student(name,sex,age) values (#{name},#{sex},#{age})
     </insert>
 
-    <update id="updatePostData" parameterType="com.hzqweb.core.entity.Student">
---         update student set ()
+    <update id="update" parameterType="com.hzqweb.core.entity.Student">
+        update student set name=#{name},sex=#{sex},age=#{age} where id=#{id}
     </update>
+
+    <delete id="delete" parameterType="com.hzqweb.core.entity.Student">
+        delete from student where id = #{id}
+    </delete>
 
 
 </mapper>

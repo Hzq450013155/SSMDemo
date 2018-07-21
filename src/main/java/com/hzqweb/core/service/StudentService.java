@@ -8,13 +8,14 @@ import java.util.List;
 
 public interface StudentService {
 
-    public Student getStudentByid(Student student);
 
-    public List<Student> getList();
+    public List<Student> getList(Student student);
 
-    public void insertStudent(Student student);
+    public void insert(Student student);
 
-    public void updateStudent(Student student);
+    public void update(Student student);
+
+    public void delete(Student student);
 
 
 }
