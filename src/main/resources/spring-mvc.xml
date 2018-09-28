@@ -7,15 +7,27 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-4.2.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <!-- 使用注解开发，不用配置controller，需要配置一个组件扫描器 -->
-    <context:component-scan base-package="com.hzqweb.*" use-default-filters="false">
+
+    <context:component-scan base-package="com.ssm.*" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
-
-
-
+    <!--//解决请求返回中文乱码问题-->
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!--解决静态资源访问问题-->
+    <!--<mvc:default-servlet-handler/>-->
+    <!--<mvc:resources location="/images/" mapping="/static/images/**"></mvc:resources>-->
+    <!--<mvc:resources location="/js/" mapping="/static/js/**"></mvc:resources>-->
+    <!--<mvc:resources location="/css/" mapping="/static/css/**"></mvc:resources>-->
     <!-- 视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <!-- 配置从项目根目录到指定目录一端路径 ,建议指定浅一点的目录-->
@@ -29,13 +41,15 @@
           class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:order="3">
         <property name="viewClass"
-                  value="org.springframework.web.servlet.view.JstlView" />
-        <property name="contentType" value="text/html" />
-        <property name="prefix" value="/pages/" />
-        <property name="suffix" value=".jsp" />
+                  value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="contentType" value="text/html"/>
+        <property name="prefix" value="/pages/"/>
+        <property name="suffix" value=".jsp"/>
     </bean>
-<!--spring不能处理的请求交给Tomcat-->
+    <!--spring不能处理的请求交给Tomcat-->
     <mvc:default-servlet-handler/>
     <!--jsr303校验，ajax-->
     <mvc:annotation-driven/>
+
+    <import resource="classpath*:spring-mybatis.xml"/> <!-- mybatis -->
 </beans>
