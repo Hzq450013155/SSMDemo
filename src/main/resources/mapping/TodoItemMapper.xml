@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.core.mapper.TodoItemMapper">
+    <resultMap id="BaseResultMap" type="com.ssm.core.entity.TodoItem">
+        <id column="TODO_ITEM_ID" property="todoItemId" jdbcType="BIGINT"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="TODO_ITEM_TITLE" property="todoItemTitle" jdbcType="VARCHAR"/>
+        <result column="TODO_ITEM_CONTENT" property="todoItemContent" jdbcType="VARCHAR"/>
+        <result column="PRIORITY" property="priority" jdbcType="VARCHAR"/>
+        <result column="CREATION_DATE" property="creationDate" jdbcType="TIMESTAMP"/>
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="TIMESTAMP"/>
+        <result column="COMMENTS" property="comments" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    t.TODO_ITEM_ID, t.USER_ID, t.TODO_ITEM_TITLE, t.TODO_ITEM_CONTENT, t.PRIORITY, t.CREATION_DATE,
+    t.LAST_UPDATE_DATE, t.COMMENTS
+  </sql>
+    <select id="getListById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from cux_todo_items t
+        where TODO_ITEM_ID = #{todoItemId,jdbcType=BIGINT}
+    </select>
+    <select id="getList" resultMap="BaseResultMap" parameterType="com.ssm.core.entity.TodoItem">
+        select
+        <include refid="Base_Column_List"/>,u.user_name
+        from cux_todo_items t left join cux_users u on t.user_id = u.user_id
+        where 1=1
+        <if test="userId!=null and userId!=''">
+            and t.user_id = #{userId}
+        </if>
+    </select>
+    <delete id="delete" parameterType="java.lang.Long">
+    delete from cux_todo_items
+    where TODO_ITEM_ID = #{todoItemId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.ssm.core.entity.TodoItem">
+    insert into cux_todo_items ( USER_ID, TODO_ITEM_TITLE,
+      TODO_ITEM_CONTENT, PRIORITY, CREATION_DATE,
+      LAST_UPDATE_DATE, COMMENTS)
+    values ( #{userId,jdbcType=BIGINT}, #{todoItemTitle,jdbcType=VARCHAR},
+      #{todoItemContent,jdbcType=VARCHAR}, #{priority,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP},
+      #{lastUpdateDate,jdbcType=TIMESTAMP}, #{comments,jdbcType=VARCHAR})
+  </insert>
+    <update id="update" parameterType="com.ssm.core.entity.TodoItem">
+    update cux_todo_items
+    set
+      TODO_ITEM_TITLE = #{todoItemTitle,jdbcType=VARCHAR},
+      TODO_ITEM_CONTENT = #{todoItemContent,jdbcType=VARCHAR},
+      PRIORITY = #{priority,jdbcType=VARCHAR},
+      LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      COMMENTS = #{comments,jdbcType=VARCHAR}
+    where TODO_ITEM_ID = #{todoItemId,jdbcType=BIGINT}
+  </update>
+</mapper>

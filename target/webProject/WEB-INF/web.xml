@@ -51,7 +51,8 @@
         <session-timeout>120</session-timeout>
     </session-config>
 
-    <!-- 针对SpringMVC的配置：：：：：：中央调度器：本质上一个serlvet            配置的关于SpringmVC组件 -->
+    <!-- 针对SpringMVC的配置：：：：：：中央调度器：本质上一个serlvet
+    配置的关于SpringmVC组件 -->
     <servlet>
         <servlet-name>springmvc</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -107,9 +108,44 @@
     <!--<location>/NotFound.jsp</location>-->
     <!--</error-page>-->
 
+    <!--登录过滤器-->
+    <!--<filter>-->
+        <!--<filter-name>sessionFilter</filter-name>-->
+        <!--<filter-class>com.ssmlter.LoginFliter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>sessionFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
+    <!--<filter>-->
+        <!--<filter-name>SessionFilter</filter-name>-->
+        <!--<filter-class>com.ssm.filter.LoginFliter</filter-class>-->
+        <!--<init-param>-->
+            <!--<param-name>logonStrings</param-name>&lt;!&ndash; 对登录页面不进行过滤 &ndash;&gt;-->
+            <!--<param-value>/login.html</param-value>-->
+        <!--</init-param>-->
+        <!--<init-param>-->
+            <!--<param-name>includeStrings</param-name>&lt;!&ndash; 只对指定过滤参数后缀进行过滤 &ndash;&gt;-->
+            <!--<param-value>.jsp</param-value>&lt;!&ndash;.do;&ndash;&gt;-->
+        <!--</init-param>-->
+        <!--<init-param>-->
+            <!--<param-name>redirectPath</param-name>&lt;!&ndash; 未通过跳转到登录界面 &ndash;&gt;-->
+            <!--<param-value>/login.html</param-value>-->
+        <!--</init-param>-->
+        <!--<init-param>-->
+            <!--<param-name>disabletestfilter</param-name>&lt;!&ndash; Y:过滤无效 &ndash;&gt;-->
+            <!--<param-value>N</param-value>-->
+        <!--</init-param>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>SessionFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
 
     <welcome-file-list>
-        <welcome-file>/pages/index.jsp</welcome-file>
+        <welcome-file>login.html</welcome-file>
     </welcome-file-list>
 
 </web-app>

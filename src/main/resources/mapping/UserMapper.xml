@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.core.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.ssm.core.entity.User">
+        <id column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="SEX" property="sex" jdbcType="VARCHAR"/>
+        <result column="AGE" property="age" jdbcType="BIGINT"/>
+        <result column="PHONE_NUMBER" property="phoneNumber" jdbcType="VARCHAR"/>
+        <result column="CREATION_DATE" property="creationDate" jdbcType="TIMESTAMP"/>
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="TIMESTAMP"/>
+        <result column="COMMENTS" property="comments" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        USER_ID, USER_NAME, PASSWORD, SEX, AGE, PHONE_NUMBER, CREATION_DATE, LAST_UPDATE_DATE,
+        COMMENTS
+    </sql>
+    <select id="login" resultMap="BaseResultMap" parameterType="com.ssm.core.entity.User">
+        select * from cux_users where user_name = #{userName}
+    </select>
+    <select id="getList" resultMap="BaseResultMap">
+        select * from cux_users
+    </select>
+    <select id="getListById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from cux_users
+        where USER_ID = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+    delete from cux_users
+    where USER_ID = #{userId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.ssm.core.entity.User">
+    insert into cux_users (USER_ID, USER_NAME, PASSWORD, 
+      SEX, AGE, PHONE_NUMBER, 
+      CREATION_DATE, LAST_UPDATE_DATE, COMMENTS
+      )
+    values (#{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{age,jdbcType=BIGINT}, #{phoneNumber,jdbcType=VARCHAR}, 
+      #{creationDate,jdbcType=TIMESTAMP}, #{lastUpdateDate,jdbcType=TIMESTAMP}, #{comments,jdbcType=VARCHAR}
+      )
+  </insert>
+    <update id="update" parameterType="com.ssm.core.entity.User">
+    update cux_users
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      AGE = #{age,jdbcType=BIGINT},
+      PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR},
+      LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      COMMENTS = #{comments,jdbcType=VARCHAR}
+    where USER_ID = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>

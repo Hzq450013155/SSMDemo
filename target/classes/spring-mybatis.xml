@@ -1,53 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
                         http://www.springframework.org/schema/context
                         http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                        http://www.springframework.org/schema/aop
+                        http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
                         http://www.springframework.org/schema/tx
-                        http://www.springframework.org/schema/tx/spring-tx.xsd">
-
-    <!-- 组件扫描和自动装配 -->
-    <context:component-scan base-package="com.hzqweb.*.mapper.*" />
-    <context:component-scan base-package="com.hzqweb.*.service.*" />
-
-    <!-- 加载属性配置文件 -->
-    <context:property-placeholder location="classpath:dbconfig.properties"/>
+                        http://www.springframework.org/schema/tx/spring-tx.xsd"
+       default-autowire="byName" default-lazy-init="false">
 
 
-    <!-- 配置数据源 -->
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${jdbc.driverClasss}"/>
-        <property name="url" value="${jdbc.jdbcUrl}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
 
-    </bean>
+    <!--&lt;!&ndash;01.配置数据源 &ndash;&gt;-->
+    <!--<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
+        <!--<property name="driverClass" value="${jdbc.driverClass}"></property>-->
+        <!--<property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>-->
+        <!--<property name="user" value="${jdbc.user}"></property>-->
+        <!--<property name="password" value="${jdbc.password}"></property>-->
+    <!--</bean>-->
+    <!--&lt;!&ndash;&lt;!&ndash; initialSize初始化时建立物理连接的个数0  maxActive最大连接池数量8 minIdle最小连接池数量0&ndash;&gt;&ndash;&gt;-->
 
-
-    <!-- mybatis和spring完美整合，不需要mybatis的配置映射文件 -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <!-- 自动扫描mapping.xml文件 -->
-        <property name="mapperLocations" value="classpath:mapping/*.xml"></property>
-    </bean>
-
-
-    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
-    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
-        <!--<property name="basePackage" value="com.godwei.ssmframe.mapper"/>-->
-        <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>-->
+    <!--&lt;!&ndash;=======================================================&ndash;&gt;-->
+    <!--&lt;!&ndash; 02.配置SessionFactory &ndash;&gt;-->
+    <!--&lt;!&ndash; spring和MyBatis完美整合，不需要mybatis的配置映射文件 &ndash;&gt;-->
+    <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+        <!--<property name="dataSource" ref="dataSource"></property>-->
+        <!--&lt;!&ndash;<property name="configLocation" value="classpath:mybatis-config.xml"></property>&ndash;&gt;-->
+        <!--&lt;!&ndash;扫描mapping（。xml）&ndash;&gt;-->
+        <!--<property name="mapperLocations" value="classpath:mapping/*.xml"></property>-->
     <!--</bean>-->
 
 
-    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
+    <!--&lt;!&ndash; 配置扫描器，将mybatis接口的实现加入到ioc容器中 &ndash;&gt;-->
+    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+        <!--&lt;!&ndash;扫描所有dao接口的实现，加入到ioc容器中 &ndash;&gt;-->
+        <!--<property name="basePackage" value="com.ssm.core.mapper"></property>-->
+        <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>-->
+    <!--</bean>-->
 
-    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!--&lt;!&ndash;mybatis整合配置结束&ndash;&gt;-->
 
+
+    <!--&lt;!&ndash;=======================================================&ndash;&gt;-->
+
+
+    <!--&lt;!&ndash; 06.配置事务管理器 &ndash;&gt;-->
+    <!--<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+        <!--<property name="dataSource" ref="dataSource"></property>-->
+    <!--</bean>-->
+    <!--&lt;!&ndash;开启注解事务配置&ndash;&gt;-->
+    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
+
+
+    <!-- 07.配置开启事务操作 -->
+    <!--<tx:advice id="txAdvice" transaction-manager="transactionManager">-->
+    <!--<tx:attributes>-->
+    <!--&lt;!&ndash;指定在连接方法上应用的事务属性 &ndash;&gt;-->
+    <!--<tx:method name="add*" isolation="DEFAULT" propagation="REQUIRED"/>-->
+    <!--&lt;!&ndash; 添加事务管理的方法 &ndash;&gt;-->
+    <!--<tx:method name="save*" propagation="REQUIRED"/>-->
+    <!--<tx:method name="delete*" propagation="REQUIRED"/>-->
+    <!--<tx:method name="update*" propagation="REQUIRED"/>-->
+    <!--<tx:method name="select*" read-only="true"/>-->
+    <!--<tx:method name="insert*" propagation="REQUIRED"/>-->
+    <!--<tx:method name="remove*" propagation="REQUIRED"/>-->
+    <!--<tx:method name="find*" propagation="SUPPORTS"/>-->
+    <!--<tx:method name="get*" propagation="SUPPORTS"/>-->
+    <!--</tx:attributes>-->
+    <!--</tx:advice>-->
+    <!--&lt;!&ndash; aop配置 &ndash;&gt;-->
+    <!--<aop:config>-->
+    <!--<aop:pointcut expression="execution(* *..service.*.*(..))" id="stockPointcut"/>-->
+    <!--<aop:advisor advice-ref="txAdvice" pointcut-ref="stockPointcut"/>-->
+    <!--<aop:advisor advice-ref="txAdvice" pointcut="execution(* com..*Impl.*(..))" order="2"/>-->
+    <!--</aop:config>-->
 </beans>
