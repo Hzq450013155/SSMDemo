@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
+
+    <bean id="helloWorldImpl1" class="com.ssm.aoptest.HelloWorldImpl1"/>
+    <bean id="helloWorldImpl2" class="com.ssm.aoptest.HelloWorldImpl2"/>
+    <bean id="timeHandler" class="com.ssm.aoptest.TimeHander"/>
+    <bean id="logHandler" class="com.ssm.aoptest.LogHandler"/>
+
+    <aop:config>
+        <aop:aspect id="time" ref="timeHandler" order="1">
+            <aop:pointcut id="addAllMethod" expression="execution(* com.ssm.aoptest.HelloWorld.*())"/>
+            <aop:before method="printTime" pointcut-ref="addAllMethod"/>
+            <aop:after method="printTime" pointcut-ref="addAllMethod"/>
+        </aop:aspect>
+        <aop:aspect id="log" ref="logHandler" order="2">
+            <aop:pointcut id="printLog" expression="execution(* com.ssm.aoptest.HelloWorld.*(..))"/>
+            <aop:before method="LogBefore" pointcut-ref="printLog"/>
+            <aop:after method="LogAfter" pointcut-ref="printLog"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
