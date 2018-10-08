@@ -1,11 +1,11 @@
 package com.ssm.core.serviceImpl;
 
+import com.ssm.aoptest.DynamicSwitchDataSource;
 import com.ssm.core.entity.TodoItem;
 import com.ssm.core.mapper.TodoItemMapper;
 import com.ssm.core.service.TodoItemService;
 import com.ssm.datasource.DataSourceHolder;
 import com.ssm.datasource.DataSourceType;
-import com.ssm.datasource.DynamicDataSource;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +38,7 @@ public class TodoItemServiceImpl implements TodoItemService {
      * @return java.util.List<com.ssm.core.entity.TodoItem>
      */
 //    @Transactional(transactionManager = "transactionManager",readOnly = false)
+//    @DynamicSwitchDataSource(dataSource = DataSourceType.dataSource2)
     public List<TodoItem> getList(TodoItem model) {
         logger.info("===================查询待办事项列表=====================");
 //        if (model.getTodoItemId() == null) {
@@ -47,9 +48,10 @@ public class TodoItemServiceImpl implements TodoItemService {
 //        }
 
         List<TodoItem> list = todoItemMapper.getList(model);
-        DataSourceHolder.setDataSourceType(DataSourceType.dataSource2);
-        List<TodoItem> list2 = todoItemMapper.getList(model);
-        list.addAll(list2);
+//        DataSourceHolder.setDataSourceType(DataSourceType.dataSource2);
+//        List<TodoItem> list2 = todoItemMapper.getList(model);
+//        list.addAll(list2);
+        logger.info("list:{}" + list);
         return list;
     }
 

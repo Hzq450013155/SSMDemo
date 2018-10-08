@@ -47,12 +47,12 @@ public class TodoItemController {
     public ModelAndView getList(@RequestParam(value = "pn", defaultValue = "1") Integer pn, HttpServletRequest request, HttpServletResponse response, TodoItem model) {
         model.setUserId((Long) request.getSession().getAttribute("userId"));
         //多数据源不能使用静态分页，线程不安全会导致数据错误
-//        PageHelper.startPage(pn, 5);
+        PageHelper.startPage(pn, 5);
         List<TodoItem> list = todoItemService.getList(model);
-//        PageInfo page = new PageInfo(list, 5);
-        ModelAndView mv = new ModelAndView("todoItemList");
-//        mv.addObject("page", page);
-        mv.addObject("list", list);
+        PageInfo page = new PageInfo(list, 5);
+        ModelAndView mv = new ModelAndView("todoItemList1");
+        mv.addObject("page", page);
+//        mv.addObject("list", list);
         return mv;
     }
 
