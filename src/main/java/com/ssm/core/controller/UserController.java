@@ -1,12 +1,16 @@
 package com.ssm.core.controller;
 
-import com.ssm.core.entity.TodoItem;
 import com.ssm.core.entity.User;
-import com.ssm.core.service.TodoItemService;
 import com.ssm.core.service.UserService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,25 +25,58 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private TodoItemService todoItemService;
 
-
-    @RequestMapping("login")
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response, User model) {
-        User login = userService.login(model);
-        if (login == null) {
-            return new ModelAndView("redirect:/");
-        } else {
-            TodoItem todoItem = new TodoItem();
-            todoItem.setUserId(login.getUserId());
-            List list = todoItemService.getList(todoItem);
-            request.setAttribute("list", list);
-            request.getSession().setAttribute("userId", login.getUserId());
-            return new ModelAndView("index");
+    @RequestMapping(value = "loginShiro", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+//    @ResponseBody
+    public String loginShiro(User model) {
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(model.getUserName(), model.getPassword());
+        try {
+            subject.login(token);
+        } catch (Exception e) {
+            return e.getMessage();
         }
+//        if (subject.hasRole("admin")) {
+//            return "index";
+//        }
+        return "index";
     }
 
+    @RequiresRoles("admin")
+    @RequestMapping("tsetRoles")
+    @ResponseBody
+    public String testRoles() {
+        return "success";
+    }
+
+    @RequiresRoles("admin")
+    @RequiresPermissions("admin:select")
+    @RequestMapping("tsetRoles1")
+    @ResponseBody
+    public String testRoles1() {
+        return "success111";
+    }
+
+//    @RequestMapping("login")
+//    public ModelAndView login(HttpServletRequest request, HttpServletResponse response, User model) {
+//        User login = userService.login(model);
+//        if (login == null) {
+//            return new ModelAndView("redirect:/");
+//        } else {
+//            TodoItem todoItem = new TodoItem();
+//            todoItem.setUserId(login.getUserId());
+//            request.getSession().setAttribute("userId", login.getUserId());
+//            return new ModelAndView("index");
+//        }
+//    }
+
+    @RequestMapping("logout")
+    public String logout(HttpServletRequest request) {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+//        request.getSession().removeAttribute("userId");
+        return "redirect:/login.html";
+    }
 
     @RequestMapping(params = "getList")
     public ModelAndView getList(HttpServletRequest request, HttpServletResponse response, User model) {

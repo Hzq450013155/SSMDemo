@@ -1,11 +1,10 @@
 package com.ssm.core.serviceImpl;
 
-import com.ssm.aoptest.DynamicSwitchDataSource;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.ssm.core.entity.TodoItem;
 import com.ssm.core.mapper.TodoItemMapper;
 import com.ssm.core.service.TodoItemService;
-import com.ssm.datasource.DataSourceHolder;
-import com.ssm.datasource.DataSourceType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,12 +29,13 @@ public class TodoItemServiceImpl implements TodoItemService {
     @Autowired
     private TodoItemMapper todoItemMapper;
 
-    /*
-     *  查询待办事项列表
+    /**
+     * 查询待办事项列表
+     *
+     * @param
+     * @return java.util.List<com.ssm.core.entity.TodoItem>
      * @author zongqi.hao@hand-china.com
      * @date 2018-07-21 15:24
-     * @param [model]
-     * @return java.util.List<com.ssm.core.entity.TodoItem>
      */
 //    @Transactional(transactionManager = "transactionManager",readOnly = false)
 //    @DynamicSwitchDataSource(dataSource = DataSourceType.dataSource2)
@@ -51,17 +51,18 @@ public class TodoItemServiceImpl implements TodoItemService {
 //        DataSourceHolder.setDataSourceType(DataSourceType.dataSource2);
 //        List<TodoItem> list2 = todoItemMapper.getList(model);
 //        list.addAll(list2);
-        logger.info("list:{}" + list);
+        logger.info("list:" + JSONArray.parseArray(JSON.toJSONString(list)));
         return list;
     }
 
 
-    /*
-     *  新增待办事项（事务）
+    /**
+     * 新增待办事项（事务）
+     *
+     * @param
+     * @return void
      * @author zongqi.hao@hand-china.com
      * @date 2018-07-18 15:33
-     * @param [model]
-     * @return void
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Integer insert(TodoItem model) {
@@ -69,12 +70,13 @@ public class TodoItemServiceImpl implements TodoItemService {
         return todoItemMapper.insert(model);
     }
 
-    /*
-     *  更新待办事项
+    /**
+     * 更新待办事项
+     *
+     * @return void
      * @author zongqi.hao@hand-china.com
      * @date 2018-07-18 15:34
-     * @param [model]
-     * @return void
+     * @param[model]
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Integer update(TodoItem model) {
@@ -82,12 +84,13 @@ public class TodoItemServiceImpl implements TodoItemService {
         return todoItemMapper.update(model);
     }
 
-    /*
-     *  删除待办事项
+    /**
+     * 删除待办事项
+     *
+     * @return void
      * @author zongqi.hao@hand-china.com
      * @date 2018-07-21 15:24
-     * @param [model]
-     * @return void
+     * @param[model]
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Integer delete(TodoItem model) {

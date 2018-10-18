@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserMapper {
 
-    User login(User user);
+    User getUserByUsername(String username);
 
     List<User> getList();
 

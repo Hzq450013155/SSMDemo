@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserService {
 
 
-    User login(User user);
+    User getUserByUsername(String username);
 
     List<User> getList(User user);
 
@@ -18,6 +18,5 @@ public interface UserService {
     void update(User user);
 
     void delete(User user);
-
 
 }

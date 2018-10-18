@@ -10,7 +10,6 @@ package com.ssm.core.serviceImpl;
 import com.ssm.core.entity.User;
 import com.ssm.core.mapper.UserMapper;
 import com.ssm.core.service.UserService;
-import com.ssm.util.MD5Util;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,28 +27,21 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public User login(User user) {
-        User yanzheng = userMapper.login(user);
-        if (yanzheng != null) {
-            String pass = MD5Util.md5Password(user.getPassword());
-            if (pass.equals(yanzheng.getPassword())) {
-                return yanzheng;
-            } else {
-                return null;
-            }
-        } else {
+    public User getUserByUsername(String username) {
+        User user = userMapper.getUserByUsername(username);
+        if (user == null) {
             return null;
         }
-
-
+        return user;
     }
 
-    /*
-     *  查询用户列表
+    /**
+     * 查询用户列表
+     *
+     * @param
+     * @return java.util.List<com.ssm.core.entity.User>
      * @author zongqi.hao@hand-china.com
      * @date 2018-07-21 15:24
-     * @param [mdoel]
-     * @return java.util.List<com.ssm.core.entity.User>
      */
     public List<User> getList(User mdoel) {
         logger.info("===================查询用户列表=====================");
@@ -63,12 +55,13 @@ public class UserServiceImpl implements UserService {
         return list;
     }
 
-    /*
-     *  新增用户（事务）
+    /**
+     * 新增用户（事务）
+     *
+     * @param
+     * @return void
      * @author zongqi.hao@hand-china.com
      * @date 2018-07-18 15:33
-     * @param [mdoel]
-     * @return void
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void insert(User mdoel) {
@@ -76,12 +69,13 @@ public class UserServiceImpl implements UserService {
         userMapper.insert(mdoel);
     }
 
-    /*
-     *  更新用户
+    /**
+     * 更新用户
+     *
+     * @param
+     * @return void
      * @author zongqi.hao@hand-china.com
      * @date 2018-07-18 15:34
-     * @param [mdoel]
-     * @return void
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void update(User mdoel) {
@@ -89,12 +83,13 @@ public class UserServiceImpl implements UserService {
         userMapper.update(mdoel);
     }
 
-    /*
-     *  删除用户
+    /**
+     * 删除用户
+     *
+     * @param
+     * @return void
      * @author zongqi.hao@hand-china.com
      * @date 2018-07-21 15:24
-     * @param [mdoel]
-     * @return void
      */
     public void delete(User mdoel) {
         logger.info("===================删除用户=====================");

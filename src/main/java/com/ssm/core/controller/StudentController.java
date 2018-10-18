@@ -30,19 +30,19 @@ public class StudentController {
     @RequestMapping(params = "insert")
     public ModelAndView insert(HttpServletRequest request, HttpServletResponse response, Student model) {
         studentService.insert(model);
-        return getList(request,response,new Student());
+        return getList(request, response, new Student());
     }
 
     @RequestMapping(params = "update")
     public ModelAndView update(HttpServletRequest request, HttpServletResponse response, Student model) {
         studentService.update(model);
-        return getList(request,response,new Student());
+        return getList(request, response, new Student());
     }
 
     @RequestMapping(params = "delete")
     public ModelAndView delete(HttpServletRequest request, HttpServletResponse response, Student model) {
         studentService.delete(model);
-        return getList(request,response,new Student());
+        return getList(request, response, new Student());
     }
 
 
