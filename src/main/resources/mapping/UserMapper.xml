@@ -16,7 +16,7 @@
         USER_ID, USER_NAME, PASSWORD, SEX, AGE, PHONE_NUMBER, CREATION_DATE, LAST_UPDATE_DATE,
         COMMENTS
     </sql>
-    <select id="login" resultMap="BaseResultMap" parameterType="com.ssm.core.entity.User">
+    <select id="getUserByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
         select * from cux_users where user_name = #{userName}
     </select>
     <select id="getList" resultMap="BaseResultMap">
