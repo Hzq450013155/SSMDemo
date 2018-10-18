@@ -35,25 +35,32 @@ public class LoginFliter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest hrequest = (HttpServletRequest) request;
         HttpServletResponseWrapper wrapper = new HttpServletResponseWrapper((HttpServletResponse) response);
-        String logonStrings = config.getInitParameter("logonStrings"); // 登录登陆页面
-        String includeStrings = config.getInitParameter("includeStrings"); // 过滤资源后缀参数
-        String redirectPath = hrequest.getContextPath() + config.getInitParameter("redirectPath");// 没有登陆转向页面
-        String disabletestfilter = config.getInitParameter("disabletestfilter");// 过滤器是否有效
+        // 登录登陆页面
+        String logonStrings = config.getInitParameter("logonStrings");
+        // 过滤资源后缀参数
+        String includeStrings = config.getInitParameter("includeStrings");
+        // 没有登陆转向页面
+        String redirectPath = hrequest.getContextPath() + config.getInitParameter("redirectPath");
+        // 过滤器是否有效
+        String disabletestfilter = config.getInitParameter("disabletestfilter");
         if (disabletestfilter.toUpperCase().equals("Y")) { // 过滤无效
             chain.doFilter(request, response);
             return;
         }
         String[] logonList = logonStrings.split(";");
         String[] includeList = includeStrings.split(";");
-        if (!isContains(hrequest.getRequestURI(), includeList)) {// 只对指定过滤参数后缀进行过滤
+        //只对指定过滤参数后缀进行过滤
+        if (!isContains(hrequest.getRequestURI(), includeList)) {
             chain.doFilter(request, response);
             return;
         }
-        if (isContains(hrequest.getRequestURI(), logonList)) {// 对登录页面不进行过滤
+        // 对登录页面不进行过滤
+        if (isContains(hrequest.getRequestURI(), logonList)) {
             chain.doFilter(request, response);
             return;
         }
-        Object user = hrequest.getSession().getAttribute("userId");//判断用户是否登录
+        //判断用户是否登录
+        Object user = hrequest.getSession().getAttribute("userId");
         if (user == null) {
             wrapper.sendRedirect(redirectPath);
             return;

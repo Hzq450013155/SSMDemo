@@ -26,57 +26,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "loginShiro", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-//    @ResponseBody
-    public String loginShiro(User model) {
-        Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(model.getUserName(), model.getPassword());
-        try {
-            subject.login(token);
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-//        if (subject.hasRole("admin")) {
-//            return "index";
-//        }
-        return "index";
-    }
-
-    @RequiresRoles("admin")
-    @RequestMapping("tsetRoles")
-    @ResponseBody
-    public String testRoles() {
-        return "success";
-    }
-
-    @RequiresRoles("admin")
-    @RequiresPermissions("admin:select")
-    @RequestMapping("tsetRoles1")
-    @ResponseBody
-    public String testRoles1() {
-        return "success111";
-    }
-
-//    @RequestMapping("login")
-//    public ModelAndView login(HttpServletRequest request, HttpServletResponse response, User model) {
-//        User login = userService.login(model);
-//        if (login == null) {
-//            return new ModelAndView("redirect:/");
-//        } else {
-//            TodoItem todoItem = new TodoItem();
-//            todoItem.setUserId(login.getUserId());
-//            request.getSession().setAttribute("userId", login.getUserId());
-//            return new ModelAndView("index");
-//        }
-//    }
-
-    @RequestMapping("logout")
-    public String logout(HttpServletRequest request) {
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
-//        request.getSession().removeAttribute("userId");
-        return "redirect:/login.html";
-    }
 
     @RequestMapping(params = "getList")
     public ModelAndView getList(HttpServletRequest request, HttpServletResponse response, User model) {

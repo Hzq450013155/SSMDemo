@@ -18,7 +18,7 @@ import java.util.Date;
  * @date 2018-08-01
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:applicationContext.xml")
+@ContextConfiguration(locations = "classpath:spring/applicationContext.xml")
 public class mapperTest {
 
     @Autowired

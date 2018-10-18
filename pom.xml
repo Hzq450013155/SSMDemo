@@ -19,7 +19,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- 配置相关jar包的版本 -->
-        <spring.version>4.3.4.RELEASE</spring.version>
+        <spring.version>4.3.18.RELEASE</spring.version>
         <aspectj.version>1.8.9</aspectj.version>
         <mybatis.version>3.4.1</mybatis.version>
         <mybatis-spring.version>1.3.0</mybatis-spring.version>

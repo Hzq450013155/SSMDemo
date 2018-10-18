@@ -18,7 +18,7 @@ import java.util.List;
  * @date 2018-10-08
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
 public class BeanAspectTest {
 
     @Autowired

@@ -1,0 +1,129 @@
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+<!--xmlns:sec="http://www.springframework.org/schema/security"-->
+<!--xmlns:aop="http://www.springframework.org/schema/aop"-->
+<!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--xsi:schemaLocation="http://www.springframework.org/schema/beans-->
+<!--http://www.springframework.org/schema/beans/spring-beans-4.1.xsd-->
+<!--http://www.springframework.org/schema/aop-->
+<!--http://www.springframework.org/schema/aop/spring-aop.xsd-->
+<!--http://www.springframework.org/schema/security-->
+<!--http://www.springframework.org/schema/security/spring-security.xsd">-->
+
+<!--&lt;!&ndash;过滤资源 start&ndash;&gt;-->
+<!--&lt;!&ndash;不进行拦截的静态资源&ndash;&gt;-->
+<!--<sec:http pattern="/static/css/*" security="none"/>-->
+<!--<sec:http pattern="/static/images/*" security="none"/>-->
+<!--<sec:http pattern="/static/js/*" security="none"/>-->
+<!--&lt;!&ndash;<sec:http pattern="/static/fonts/*" security="none"/>&ndash;&gt;-->
+<!--&lt;!&ndash;不进行拦截的页面&ndash;&gt;-->
+<!--<sec:http pattern="/WEB-INF/views/login.html" security="none"/>-->
+<!--&lt;!&ndash;过滤资源 end&ndash;&gt;-->
+
+<!--&lt;!&ndash;权限配置及自定义登录界面 start&ndash;&gt;-->
+<!--<sec:http auto-config="true" access-decision-manager-ref="accessDecisionManager">-->
+<!--<sec:form-login-->
+<!--login-page="/user/login"-->
+<!--login-processing-url="/login.do"-->
+<!--authentication-success-handler-ref="LoginController"-->
+<!--authentication-failure-handler-ref="LoginController"/>-->
+<!--&lt;!&ndash;登出&ndash;&gt;-->
+<!--<sec:logout invalidate-session="true" logout-url="/logout.do" logout-success-url="/"/>-->
+<!--&lt;!&ndash;session管理及单点登录&ndash;&gt;-->
+<!--<sec:session-management session-authentication-strategy-ref="concurrentSessionControlStrategy"/>-->
+<!--&lt;!&ndash;资源拦截器配置&ndash;&gt;-->
+<!--<sec:custom-filter ref="filterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR"/>-->
+<!--<sec:custom-filter ref="concurrencyFilter" position="CONCURRENT_SESSION_FILTER"/>-->
+<!--</sec:http>-->
+
+<!--&lt;!&ndash;自定义验证结果控制器&ndash;&gt;-->
+<!--<bean id="loginController" class="com.ssm.core.controller.LoginController">-->
+<!--<property name="successURL" value="/user/home"/>-->
+<!--<property name="failURL" value="/user/login"/>-->
+<!--<property name="attrName" value="loginResult"/>-->
+<!--<property name="byForward" value="false"/>-->
+<!--<property name="userInfo" value="userInfo"/>-->
+<!--</bean>-->
+
+<!--<sec:authentication-manager alias="myAuthenticationManager">-->
+<!--<sec:authentication-provider ref="daoAuthenticationProvider"/>-->
+<!--</sec:authentication-manager>-->
+
+
+<!--&lt;!&ndash;权限查询服务&ndash;&gt;-->
+<!--<bean id="cachingUserDetailsService"-->
+<!--class="org.springframework.security.config.authentication.CachingUserDetailsService">-->
+<!--<constructor-arg name="delegate" ref="webUserDetailsService"/>-->
+<!--<property name="userCache">-->
+<!--<bean class="org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache">-->
+<!--<property name="cache" ref="userEhCacheFactory"/>-->
+<!--</bean>-->
+<!--</property>-->
+<!--</bean>-->
+
+<!--<bean id="daoAuthenticationProvider"-->
+<!--class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">-->
+<!--<property name="messageSource" ref="messageSource"/>-->
+<!--<property name="passwordEncoder" ref="messageDigestPasswordEncoder"/>-->
+<!--<property name="userDetailsService" ref="cachingUserDetailsService"/>-->
+<!--<property name="saltSource" ref="saltSource"/>-->
+<!--<property name="hideUserNotFoundExceptions" value="false"/>-->
+<!--</bean>-->
+
+<!--&lt;!&ndash;MD5加密盐值&ndash;&gt;-->
+<!--<bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">-->
+<!--<property name="userPropertyToUse" value="username"/>-->
+<!--</bean>-->
+
+<!--&lt;!&ndash;决策管理器 start&ndash;&gt;-->
+<!--<bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">-->
+<!--<constructor-arg name="decisionVoters">-->
+<!--<list>-->
+<!--<ref bean="roleVoter"/>-->
+<!--<ref bean="authenticatedVoter"/>-->
+<!--</list>-->
+<!--</constructor-arg>-->
+<!--<property name="messageSource" ref="messageSource"/>-->
+<!--</bean>-->
+<!--<bean id="roleVoter" class="org.springframework.security.access.vote.RoleVoter">-->
+<!--<property name="rolePrefix" value="ROLE_"/>-->
+<!--</bean>-->
+<!--<bean id="authenticatedVoter" class="org.springframework.security.access.vote.AuthenticatedVoter"/>-->
+<!--&lt;!&ndash;决策管理器 end&ndash;&gt;-->
+
+<!--&lt;!&ndash;资源拦截器 start&ndash;&gt;-->
+<!--<bean id="filterSecurityInterceptor"-->
+<!--class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">-->
+<!--<property name="accessDecisionManager" ref="accessDecisionManager"/>-->
+<!--<property name="authenticationManager" ref="myAuthenticationManager"/>-->
+<!--<property name="securityMetadataSource" ref="resourceSecurityMetadataSource"/>-->
+<!--</bean>-->
+
+<!--&lt;!&ndash;方法拦截器 start&ndash;&gt;-->
+<!--<bean id="methodSecurityInterceptor"-->
+<!--class="org.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor">-->
+<!--<property name="accessDecisionManager" ref="accessDecisionManager"/>-->
+<!--<property name="authenticationManager" ref="myAuthenticationManager"/>-->
+<!--<property name="securityMetadataSource" ref="methodSecurityMetadataSource"/>-->
+<!--</bean>-->
+<!--<aop:config>-->
+<!--<aop:advisor advice-ref="methodSecurityInterceptor" pointcut="execution(* com.magic.rent.service.*.*(..))"-->
+<!--order="1"/>-->
+<!--</aop:config>-->
+<!--&lt;!&ndash;方法拦截器 end&ndash;&gt;-->
+
+<!--&lt;!&ndash;session管理器 start&ndash;&gt;-->
+<!--<bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">-->
+<!--<constructor-arg name="sessionRegistry" ref="sessionRegistry"/>-->
+<!--<constructor-arg name="expiredUrl" value="/user/timeout"/>-->
+<!--</bean>-->
+
+<!--<bean id="concurrentSessionControlStrategy"-->
+<!--class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">-->
+<!--<constructor-arg name="sessionRegistry" ref="sessionRegistry"/>-->
+<!--<property name="maximumSessions" value="1"/>-->
+<!--</bean>-->
+
+<!--<bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>-->
+<!--&lt;!&ndash;session管理器 end&ndash;&gt;-->
+<!--</beans>-->
