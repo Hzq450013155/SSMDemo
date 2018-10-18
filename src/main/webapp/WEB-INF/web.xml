@@ -24,7 +24,7 @@
     在ContextLoaderListener中关联了ContextLoader这个类，所以整个加载配置过程由ContextLoader来完成。-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:applicationContext.xml</param-value>
+        <param-value>classpath:spring/applicationContext.xml</param-value>
     </context-param>
 
     <!-- 注册ServletContext监听器，创建容器对象，并且将ApplicationContext对象放到Application域中 -->
@@ -51,6 +51,7 @@
         <session-timeout>120</session-timeout>
     </session-config>
 
+
     <!-- 针对SpringMVC的配置：：：：：：中央调度器：本质上一个serlvet
     配置的关于SpringmVC组件 -->
     <servlet>
@@ -58,7 +59,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:spring-mvc.xml</param-value>
+            <param-value>classpath:spring/spring-mvc.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -68,6 +69,25 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <!-- Spring Secutiry4.1的过滤器链配置,改用shiro -->
+    <!--<filter>-->
+    <!--<filter-name>springSecurityFilterChain</filter-name>-->
+    <!--<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+    <!--<filter-name>springSecurityFilterChain</filter-name>-->
+    <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
+    <!--shiro-->
+    <filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <!-- 解决乱码的过滤器 -->
     <!-- 在Spring框架中是如何解决从页面传来的字符串的编码问题的呢？
@@ -87,7 +107,6 @@
             <param-value>true</param-value>
         </init-param>
     </filter>
-
     <filter-mapping>
         <filter-name>CharacterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -97,26 +116,12 @@
         <filter-name>HiddenHttpMethodFilter</filter-name>
         <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
     </filter>
-
     <filter-mapping>
         <filter-name>HiddenHttpMethodFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    <!--配置了当系统发生404错误时，跳转到错误处理页面NotFound.jsp-->
-    <!--<error-page>-->
-    <!--<error-code>404</error-code>-->
-    <!--<location>/NotFound.jsp</location>-->
-    <!--</error-page>-->
 
     <!--登录过滤器-->
-    <!--<filter>-->
-    <!--<filter-name>sessionFilter</filter-name>-->
-    <!--<filter-class>com.ssmlter.LoginFliter</filter-class>-->
-    <!--</filter>-->
-    <!--<filter-mapping>-->
-    <!--<filter-name>sessionFilter</filter-name>-->
-    <!--<url-pattern>/*</url-pattern>-->
-    <!--</filter-mapping>-->
 
     <!--<filter>-->
     <!--<filter-name>SessionFilter</filter-name>-->
@@ -130,11 +135,11 @@
     <!--<param-value>.jsp</param-value>&lt;!&ndash;.do;&ndash;&gt;-->
     <!--</init-param>-->
     <!--<init-param>-->
-    <!--<param-name>redirectPath</param-name>&lt;!&ndash; 未通过跳转到登录界面 &ndash;&gt;-->
+    <!--<param-name>redirectPath</param-name>&lt;!&ndash; 跳转登录界面 &ndash;&gt;-->
     <!--<param-value>/login.html</param-value>-->
     <!--</init-param>-->
     <!--<init-param>-->
-    <!--<param-name>disabletestfilter</param-name>&lt;!&ndash; Y:过滤无效 &ndash;&gt;-->
+    <!--<param-name>disabletestfilter</param-name>&lt;!&ndash; 是否关闭过滤器 &ndash;&gt;-->
     <!--<param-value>N</param-value>-->
     <!--</init-param>-->
     <!--</filter>-->
@@ -144,8 +149,14 @@
     <!--</filter-mapping>-->
 
 
+    <!--配置了当系统发生404错误时，跳转到错误处理页面NotFound.jsp-->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.html</location>
+    </error-page>
+
     <welcome-file-list>
-        <welcome-file>login.html</welcome-file>
+        <welcome-file>/login.html</welcome-file>
     </welcome-file-list>
 
 </web-app>
