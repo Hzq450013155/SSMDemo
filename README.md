@@ -8,3 +8,4 @@ SSM搭建实例
 - AOP
 - log4j
 - 动态数据源
+- shiro认证
