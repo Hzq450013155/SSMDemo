@@ -3,21 +3,20 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="
-        http://www.springframework.org/schema/beans
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
          http://www.springframework.org/schema/aop
          http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
-         http://www.springframework.org/schema/tx
-         http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+
+
            http://www.springframework.org/schema/context
-         http://www.springframework.org/schema/context/spring-context-4.1.xsd  ">
+         http://www.springframework.org/schema/context/spring-context-4.1.xsd">
 
 
     <!--启用@AsjectJ支持-->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
-
+    <!-- 配置文件config.properties -->
+    <context:property-placeholder location="classpath:config.properties"/>
 
     <!--组件扫描，加载除controller外的bean，controller交给mvc管理-->
     <context:component-scan base-package="com.ssm.*">
@@ -27,15 +26,10 @@
 
     <context:annotation-config/>
     <!-- 自动扫描dao和service包(自动注入) -->
-    <!--<context:component-scan base-package="com.ssm.*.service"/>-->
+    <!--<context:component-scan base-package="**.*.service"/>-->
 
-    <!--<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">-->
-    <!--<property name="configLocation" value="classpath:${ehcache.file}"></property>-->
-    <!--</bean>-->
-
-
-    <import resource="classpath*:spring/spring-mybatis.xml"/> <!-- mybatis -->
-    <import resource="classpath*:spring/spring-shiro.xml"/> <!-- shiro -->
-    <import resource="classpath*:spring/spring-redis.xml"/> <!-- redis -->
+    <import resource="classpath*:spring/spring-mybatis.xml"/>
+    <import resource="classpath*:spring/spring-redis.xml"/>
+    <import resource="classpath*:spring/spring-security.xml"/>
 
 </beans>

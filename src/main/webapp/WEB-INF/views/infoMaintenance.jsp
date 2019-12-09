@@ -34,7 +34,7 @@
 <script>
     $(function () {
         $.ajax({
-            url: "/userController?getUser",
+            url: "/user/getUser",
             type: 'post',
             dataType: 'json',
             success: function (data, status) {
@@ -64,7 +64,7 @@
     });
 </script>
 <div id="form-div">
-    <form class="form-horizontal" action="/userController?update" method="post" style="width: 500px;">
+    <form class="form-horizontal" action="/user/update" method="post" style="width: 500px;">
         <div class="form-group">
             <label for="userName" class="col-sm-4 control-label">姓名：</label>
             <div class="col-sm-8">

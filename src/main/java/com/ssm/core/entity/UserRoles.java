@@ -1,6 +1,8 @@
 package com.ssm.core.entity;
 
-public class UserRoles {
+import java.io.Serializable;
+
+public class UserRoles implements Serializable {
     private Integer id;
 
     private Integer userId;

@@ -19,6 +19,8 @@ public class User implements Serializable {
      */
     private String password;
 
+    private String passwordEncrypted;
+
     /**
      * 性别
      */
@@ -83,6 +85,14 @@ public class User implements Serializable {
      */
     public void setUserName(String userName) {
         this.userName = userName == null ? null : userName.trim();
+    }
+
+    public String getPasswordEncrypted() {
+        return passwordEncrypted;
+    }
+
+    public void setPasswordEncrypted(String passwordEncrypted) {
+        this.passwordEncrypted = passwordEncrypted;
     }
 
     /**

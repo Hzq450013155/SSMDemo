@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping("todoItemController")
+@RequestMapping("todo")
 public class TodoItemController {
 
     @Autowired
@@ -38,12 +38,25 @@ public class TodoItemController {
     /**
      * 获取待办事项列表
      *
+     * @return org.springframework.web.servlet.ModelAndView
+     * @author zongqi.hao@hand-china.com
+     * @date 2018-07-21 15:42
+     */
+    @RequestMapping(value = "/index")
+    public ModelAndView index() {
+        ModelAndView mv = new ModelAndView("index");
+        return mv;
+    }
+
+    /**
+     * 获取待办事项列表
+     *
      * @param request, response, model
      * @return org.springframework.web.servlet.ModelAndView
      * @author zongqi.hao@hand-china.com
      * @date 2018-07-21 15:42
      */
-    @RequestMapping(params = "getList")
+    @RequestMapping(value = "getList")
     public ModelAndView getList(@RequestParam(value = "pn", defaultValue = "1") Integer pn, HttpServletRequest request, HttpServletResponse response, TodoItem model) {
         model.setUserId((Long) request.getSession().getAttribute("userId"));
         //多数据源不能使用静态分页，线程不安全会导致数据错误
@@ -62,7 +75,7 @@ public class TodoItemController {
      * @author zongqi.hao@hand-china.com
      * @date 2018-07-23 16:40
      */
-    @RequestMapping(params = "getListJson")
+    @RequestMapping(value = "getListJson")
     @ResponseBody
     public PageInfo getListJson(@RequestParam(value = "pn", defaultValue = "1") Integer pn, HttpServletRequest request, HttpServletResponse response, TodoItem model) {
         model.setUserId((Long) request.getSession().getAttribute("userId"));
@@ -80,7 +93,7 @@ public class TodoItemController {
      * @author zongqi.hao@hand-china.com
      * @date 2018-07-21 15:43
      */
-    @RequestMapping(params = "insert")
+    @RequestMapping(value = "insert")
     public ModelAndView insert(HttpServletRequest request, HttpServletResponse response, TodoItem model) {
         model.setUserId((Long) request.getSession().getAttribute("userId"));
         model.setCreationDate(new Date());
@@ -96,7 +109,7 @@ public class TodoItemController {
      * @author zongqi.hao@hand-china.com
      * @date 2018-07-21 15:43
      */
-    @RequestMapping(params = "update")
+    @RequestMapping(value = "update")
     public ModelAndView update(HttpServletRequest request, HttpServletResponse response, TodoItem model) {
         todoItemService.update(model);
         model.setUserId((Long) request.getSession().getAttribute("userId"));
@@ -113,7 +126,7 @@ public class TodoItemController {
      * @author zongqi.hao@hand-china.com
      * @date 2018-07-21 15:44
      */
-    @RequestMapping(params = "delete")
+    @RequestMapping(value = "delete")
     @ResponseBody
     public Integer delete(HttpServletRequest request, HttpServletResponse response, TodoItem model) {
         Integer n = todoItemService.delete(model);

@@ -42,52 +42,6 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    <!--<listener>-->
-    <!--<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>-->
-    <!--</listener>-->
-
-    <!--会话超时配置（单位为分钟）-->
-    <session-config>
-        <session-timeout>120</session-timeout>
-    </session-config>
-
-
-    <!-- 针对SpringMVC的配置：：：：：：中央调度器：本质上一个serlvet
-    配置的关于SpringmVC组件 -->
-    <servlet>
-        <servlet-name>springmvc</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:spring/spring-mvc.xml</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>springmvc</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
-
-    <!-- Spring Secutiry4.1的过滤器链配置,改用shiro -->
-    <!--<filter>-->
-    <!--<filter-name>springSecurityFilterChain</filter-name>-->
-    <!--<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>-->
-    <!--</filter>-->
-    <!--<filter-mapping>-->
-    <!--<filter-name>springSecurityFilterChain</filter-name>-->
-    <!--<url-pattern>/*</url-pattern>-->
-    <!--</filter-mapping>-->
-
-    <!--shiro-->
-    <filter>
-        <filter-name>shiroFilter</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>shiroFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 
     <!-- 解决乱码的过滤器 -->
     <!-- 在Spring框架中是如何解决从页面传来的字符串的编码问题的呢？
@@ -113,50 +67,57 @@
     </filter-mapping>
 
     <filter>
-        <filter-name>HiddenHttpMethodFilter</filter-name>
-        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+        <filter-name>spring-session</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <async-supported>true</async-supported>
+        <init-param>
+            <param-name>targetBeanName</param-name>
+            <param-value>springSession</param-value>
+        </init-param>
     </filter>
     <filter-mapping>
-        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <filter-name>spring-session</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!--登录过滤器-->
 
-    <!--<filter>-->
-    <!--<filter-name>SessionFilter</filter-name>-->
-    <!--<filter-class>com.ssm.filter.LoginFliter</filter-class>-->
-    <!--<init-param>-->
-    <!--<param-name>logonStrings</param-name>&lt;!&ndash; 对登录页面不进行过滤 &ndash;&gt;-->
-    <!--<param-value>/login.html</param-value>-->
-    <!--</init-param>-->
-    <!--<init-param>-->
-    <!--<param-name>includeStrings</param-name>&lt;!&ndash; 只对指定过滤参数后缀进行过滤 &ndash;&gt;-->
-    <!--<param-value>.jsp</param-value>&lt;!&ndash;.do;&ndash;&gt;-->
-    <!--</init-param>-->
-    <!--<init-param>-->
-    <!--<param-name>redirectPath</param-name>&lt;!&ndash; 跳转登录界面 &ndash;&gt;-->
-    <!--<param-value>/login.html</param-value>-->
-    <!--</init-param>-->
-    <!--<init-param>-->
-    <!--<param-name>disabletestfilter</param-name>&lt;!&ndash; 是否关闭过滤器 &ndash;&gt;-->
-    <!--<param-value>N</param-value>-->
-    <!--</init-param>-->
-    <!--</filter>-->
-    <!--<filter-mapping>-->
-    <!--<filter-name>SessionFilter</filter-name>-->
-    <!--<url-pattern>/*</url-pattern>-->
-    <!--</filter-mapping>-->
+    <!-- Spring Secutiry的过滤器链配置 -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
+
+    <!-- 针对SpringMVC的配置：：：：：：中央调度器：本质上一个serlvet
+    配置的关于SpringmVC组件 -->
+    <servlet>
+        <servlet-name>springmvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring/spring-mvc.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 
     <!--配置了当系统发生404错误时，跳转到错误处理页面NotFound.jsp-->
-    <error-page>
-        <error-code>404</error-code>
-        <location>/404.html</location>
-    </error-page>
+    <!--这里配置不放在web.xml 中了-->
+    <!--<error-page>-->
+    <!--<error-code>404</error-code>-->
+    <!--<location>/404.html</location>-->
+    <!--</error-page>-->
 
-    <welcome-file-list>
-        <welcome-file>/login.html</welcome-file>
-    </welcome-file-list>
+    <!--<welcome-file-list>-->
+    <!--<welcome-file>/login.html</welcome-file>-->
+    <!--</welcome-file-list>-->
 
 </web-app>

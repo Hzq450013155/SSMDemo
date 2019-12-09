@@ -13,14 +13,40 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
+    <bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 
     <!--扫描控制器-->
-    <context:component-scan base-package="com.ssm.core.controller"/>
+    <context:component-scan base-package="**.controller"/>
+    <mvc:view-controller path="/login.html" view-name="/WEB-INF/views/login"/>
+    <mvc:view-controller path="/index" view-name="redirect:/"/>
 
     <!--spring不能处理的请求交给Tomcat-->
     <mvc:default-servlet-handler/>
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject" ref="jacksonObjectMapper"/>
+        <property name="targetMethod" value="configure"/>
+        <property name="arguments">
+            <list>
+                <value type="com.fasterxml.jackson.databind.DeserializationFeature">FAIL_ON_UNKNOWN_PROPERTIES</value>
+                <value>false</value>
+            </list>
+        </property>
+    </bean>
     <!--mvn 注解启动-->
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <ref bean="jacksonObjectMapper"/>
+                </property>
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
 
 
     <!--//解决请求返回中文乱码问题-->
@@ -38,45 +64,56 @@
 
 
     <!-- 默认的视图解析器- -->
-    <bean id="defaultViewResolver"
-          class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-          p:order="1">
-        <property name="viewClass"
-                  value="org.springframework.web.servlet.view.JstlView"/>
-        <property name="contentType" value="text/html"/>
-        <property name="prefix" value="/WEB-INF/views/"/>
-        <property name="suffix" value=".jsp"/>
+    <!--<bean id="defaultViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"-->
+    <!--p:order="1">-->
+    <!--<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>-->
+    <!--<property name="contentType" value="text/html"/>-->
+    <!--<property name="prefix" value="/WEB-INF/views/"/>-->
+    <!--<property name="suffix" value=".jsp"/>-->
+    <!--</bean>-->
+
+    <!--FreeMarker解析器-->
+    <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+        <property name="cache" value="false"/>
+        <property name="suffix" value=".html"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="requestContextAttribute" value="base"/>
+        <property name="exposeRequestAttributes" value="true"/>
+        <property name="exposeSessionAttributes" value="true"/>
+        <property name="exposeSpringMacroHelpers" value="true"/>
+        <property name="allowSessionOverride" value="true"/>
     </bean>
-
-
-    <!--aop自动代理支持-->
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
-    <!--shiro bean周期管理器-->
-    <bean class="org.apache.shiro.spring.LifecycleBeanPostProcessor"></bean>
-    <!--<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"-->
-    <!--depends-on="lifecycleBeanPostProcessor"/>-->
-
-    <!--支持shiro注释-->
-    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor" id="advisor">
-        <property name="securityManager" ref="securityManager"/>
-    </bean>
-
-
-    <!-- 未认证或未授权时跳转必须在springmvc里面配，spring-shiro里的shirofilter配不生效 -->
-    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="exceptionMappings">
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPaths">
+            <list>
+                <value>/WEB-INF/views</value>
+            </list>
+        </property>
+        <!-- <property name="templateLoaderPath" value="/WEB-INF/screen" /> -->
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="freemarkerSettings">
             <props>
-                <!--表示捕获的异常 -->
-                <prop key="org.apache.shiro.authz.UnauthorizedException">
-                    <!--捕获该异常时跳转的路径 -->
-                    /403
-                </prop>
-                <!--表示捕获的异常 -->
-                <prop key="org.apache.shiro.authz.UnauthenticatedException">
-                    <!--捕获该异常时跳转的路径 -->
-                    /403
-                </prop>
+                <prop key="auto_import">spring.ftl as spring</prop>
+                <prop key="template_update_delay">2</prop><!-- 模板更新检查时间(秒) -->
+                <prop key="number_format">#</prop>
+                <prop key="date_format">yyyy-MM-dd</prop>
+                <prop key="time_format">HH:mm:ss</prop>
+                <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+                <!--  <prop key="classic_compatible">true</prop> -->
             </props>
         </property>
     </bean>
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:org/springframework/security/messages">
+            <!--<list>-->
+            <!--<value>classpath:org/springframework/security/messages</value>-->
+            <!--</list>-->
+        </property>
+    </bean>
+    <!--aop自动代理支持-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!--<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"-->
+    <!--depends-on="lifecycleBeanPostProcessor"/>-->
+
 </beans>
