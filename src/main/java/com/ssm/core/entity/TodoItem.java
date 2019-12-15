@@ -1,5 +1,6 @@
 package com.ssm.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -43,13 +44,13 @@ public class TodoItem implements Serializable {
     /**
      * 创建时间
      */
-//    @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-mm-dd hh:mm:ss")
     private Date creationDate;
 
     /**
      * 更新时间
      */
-//    @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-mm-dd hh:mm:ss")
     private Date lastUpdateDate;
 
     /**

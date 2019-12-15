@@ -19,7 +19,7 @@
     <!-- Latest compiled and minified Locales -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
     <style type="text/css">
-        .myiframe {
+        iframe {
             display: inline-block;
         }
 
@@ -69,8 +69,9 @@
             </ul>
         </div>
         <div class="col-lg-10">
-            <iframe src="/todoItemController/getList" frameborder="0" id="myiframe" height="500"></iframe>
-            <iframe src="/todoItemController/toTodoList" frameborder="0" id="myiframe1" height="500"></iframe>
+            <iframe src="/todoItemController/getList" id="myiframe1" frameborder="0" id="myiframe" height="500"
+                    width="100%"></iframe>
+            <!--<iframe src="/todoItemController/toTodoList" frameborder="0" id="myiframe1" height="500"></iframe>-->
         </div>
     </div>
 </div>

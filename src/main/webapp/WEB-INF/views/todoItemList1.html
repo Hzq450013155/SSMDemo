@@ -9,7 +9,7 @@
     <script src="/static/js/JQuery.js"></script>
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <%--<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->--%>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="/static/js/bootstrap.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
@@ -20,7 +20,6 @@
     <!-- Latest compiled and minified Locales -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
 
-    <%--表单验证--%>
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/lib/jquery.js"></script>
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
@@ -106,8 +105,8 @@
 
 </script>
 <button class="btn btn-default" onclick="add()">新增</button>
-<%--<button class="btn btn-default" onclick="edit()">修改</button>--%>
-<%--<button class="btn btn-default" onclick="del()">删除</button>--%>
+<button class="btn btn-default" onclick="edit()">修改</button>
+<button class="btn btn-default" onclick="del()">删除</button>
 <div id="form-div">
     <form id="myform" class="form-horizontal" action="/todoItemController?insert" method="post" style="width: 500px;">
         <input type="hidden" name="todoItemId" id="todoItemId">
@@ -162,7 +161,7 @@
     <h3>待办事项</h3>
     <thead>
     <tr>
-        <%--<th>选择</th>--%>
+        <!--<th>选择</th>-->
         <th>序号</th>
         <th>代办事项标题</th>
         <th>待办事项内容</th>
@@ -174,23 +173,24 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${page.list}" var="item" varStatus="c">
+    <#list page.list! as item>
         <tr>
             <td style="display: none;">${item.todoItemId}</td>
             <td style="display: none;">${item.userId}</td>
-            <td>${c.count}</td>
+            <td>${item_index+1}</td>
             <td>${item.todoItemTitle}</td>
             <td>${item.todoItemContent}</td>
             <td>${item.priority}</td>
-            <td>${item.creationDate}</td>
-            <td>${item.lastUpdateDate}</td>
+            <td>${item.creationDate?datetime}</td>
+            <td>${item.lastUpdateDate?datetime}</td>
             <td>${item.comments}</td>
             <td>
                 <button class="btn btn-default" onclick="edit(${item})">修改</button>
                 <button class="btn btn-default" onclick="del(${item.todoItemId})">删除</button>
             </td>
         </tr>
-    </c:forEach>
+    </
+    #list>
     </tbody>
 </table>
 <div class="row">
@@ -200,30 +200,35 @@
     <div class="col-md-6">
         <nav aria-label="Page navigation">
             <ul class="pagination">
-                <c:if test="${page.hasPreviousPage}">
+                <#if page.hasPreviousPage>
                     <li><a href="/todo/getList?pn=1">首页</a></li>
                     <li>
                         <a href="/todo/getList?pn=${page.pageNum-1}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                </c:if>
-                <c:forEach items="${page.navigatepageNums}" var="pageNum">
-                    <c:if test="${page.pageNum==pageNum}">
+            </
+            #if>
+            <#list page.navigatepageNums as pageNum>
+            <#if page.pageNum==pageNum>
                         <li class="active"><a href="#">${pageNum}</a></li>
-                    </c:if>
-                    <c:if test="${page.pageNum!=pageNum}">
+        </
+        #if>
+        <#if page.pageNum!=pageNum>
                         <li><a href="/todo/getList?pn=${pageNum}">${pageNum}</a></li>
-                    </c:if>
-                </c:forEach>
-                <c:if test="${page.hasNextPage}">
+    </
+    #if>
+</
+#list>
+<#if page.hasNextPage>
                     <li>
                         <a href="/todo/getList?pn=${page.pageNum+1}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                     <li><a href="/todo/getList?pn=${page.pages}">末页</a></li>
-                </c:if>
+</
+#if>
             </ul>
         </nav>
     </div>
