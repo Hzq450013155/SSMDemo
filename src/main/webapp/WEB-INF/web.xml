@@ -12,7 +12,7 @@
     <!--定义web应用名字-->
     <display-name>webProject</display-name>
     <!--声明WEB应用的描述信息-->
-    <description></description>
+    <description>A Spring-Demo by SSM</description>
 
     <!-- 1.针对Spring配置：读取配置文件 -->
     <!--如果在web.xml中不写任何参数配置信息，默认的路径是"/WEB-INF/applicationContext.xml，
@@ -67,16 +67,16 @@
     </filter-mapping>
 
     <filter>
-        <filter-name>spring-session</filter-name>
+        <filter-name>springSessionRepositoryFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
         <async-supported>true</async-supported>
-        <init-param>
-            <param-name>targetBeanName</param-name>
-            <param-value>springSession</param-value>
-        </init-param>
+        <!--<init-param>-->
+        <!--<param-name>targetBeanName</param-name>-->
+        <!--<param-value>springSession</param-value>-->
+        <!--</init-param>-->
     </filter>
     <filter-mapping>
-        <filter-name>spring-session</filter-name>
+        <filter-name>springSessionRepositoryFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 

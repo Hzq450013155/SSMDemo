@@ -1,9 +1,10 @@
 package com.ssm.datasource;
 
-import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,7 @@ import java.lang.reflect.Method;
 @Component
 @Order(1)
 public class DataSourceAop {
-    private static final Logger logger = Logger.getLogger(DataSourceAop.class);
+    private static final Logger logger = LoggerFactory.getLogger(DataSourceAop.class);
 
     @Pointcut("@within(com.ssm.datasource.DynamicSwitchDataSource)||@annotation(com.ssm.datasource.DynamicSwitchDataSource)")
     public void pointCut() {

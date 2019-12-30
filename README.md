@@ -1,11 +1,16 @@
-# SSMDemo
+### WebProject
 SSM搭建实例
 
 使用Spring+SpringMVC+Mybatis搭建JAVA WEB 项目一例。
 
-技术点：
-
+#### 技术栈：
+- Spring
+- Spring-Mvc
+- Spring-Security
+- Mybatis
 - AOP
-- log4j
-- 动态数据源
-- shiro认证
+
+
+#### 功能实现
+- DruidDataSource多数据源
+- redis分布式锁

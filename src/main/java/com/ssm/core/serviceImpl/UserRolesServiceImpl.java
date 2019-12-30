@@ -7,11 +7,10 @@
  */
 package com.ssm.core.serviceImpl;
 
-import com.ssm.core.entity.UserRoles;
-import com.ssm.core.mapper.UserMapper;
 import com.ssm.core.mapper.UserRolesMapper;
 import com.ssm.core.service.UserRolesService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ import java.util.List;
 @Service
 public class UserRolesServiceImpl implements UserRolesService {
 
-    private static final Logger logger = Logger.getLogger(UserRolesServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserRolesServiceImpl.class);
 
     @Autowired
     private UserRolesMapper userRolesMapper;

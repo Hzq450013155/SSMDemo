@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:sec="http://www.springframework.org/schema/security"
-       xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
-http://www.springframework.org/schema/aop
-http://www.springframework.org/schema/aop/spring-aop.xsd
+
+
 http://www.springframework.org/schema/security
 http://www.springframework.org/schema/security/spring-security.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
@@ -21,7 +20,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         <sec:csrf disabled="true"/>
         <sec:intercept-url pattern="/login" access="permitAll()"/>
         <sec:intercept-url pattern="/WEB-INF/views/login.html" access="permitAll"/>
-        <!--<sec:intercept-url pattern="/verifiCode" access="permitAll"/>-->
+        <sec:intercept-url pattern="/verifiCode" access="permitAll"/>
         <sec:intercept-url pattern="/common/**" access="permitAll"/>
         <sec:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
         <sec:access-denied-handler error-page="/WEB-INF/views/403.html"/>
@@ -74,78 +73,5 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         <property name="siteWideSecret" value="Zxa1pO6S6uvBMlY"/>
         <property name="defaultPassword" value="123456"/>
     </bean>
-
-
-    <!--权限查询服务-->
-    <!--<bean id="cachingUserDetailsService"-->
-    <!--class="org.springframework.security.config.authentication.CachingUserDetailsService">-->
-    <!--<constructor-arg name="delegate" ref="userDetailsService"/>-->
-    <!--<property name="userCache">-->
-    <!--<bean class="org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache">-->
-    <!--<property name="cache" ref="ehcacheUserDetails"/>-->
-    <!--</bean>-->
-    <!--</property>-->
-    <!--</bean>-->
-    <!-- 从数据库加载UserDetails的UserDetailsService -->
-    <!--<bean id="userDetailsService"-->
-    <!--class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">-->
-    <!--<property name="dataSource" ref="dataSource1"/>-->
-    <!--</bean>-->
-    <!-- 将使用默认的CacheManager创建一个名为ehcache4UserDetails的Ehcache对象 -->
-    <!--<bean id="ehcacheUserDetails" class="org.springframework.cache.ehcache.EhCacheFactoryBean"/>-->
-    <!--<bean id="userDetailsService" class="com.ssm.security.CustomUserDetailsService"/>-->
-
-
-    <!--<bean id="daoAuthenticationProvider"-->
-    <!--class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">-->
-    <!--<property name="messageSource" ref="messageSource"/>-->
-    <!--<property name="passwordEncoder" ref="messageDigestPasswordEncoder"/>-->
-    <!--<property name="userDetailsService" ref="cachingUserDetailsService"/>-->
-    <!--<property name="saltSource" ref="saltSource"/>-->
-    <!--<property name="hideUserNotFoundExceptions" value="false"/>-->
-    <!--</bean>-->
-
-    <!--MD5加密盐值-->
-    <!--<bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">-->
-    <!--<property name="userPropertyToUse" value="username"/>-->
-    <!--</bean>-->
-
-
-    <!--资源拦截器 start-->
-    <!--<bean id="filterSecurityInterceptor"-->
-    <!--class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">-->
-    <!--<property name="accessDecisionManager" ref="accessDecisionManager"/>-->
-    <!--<property name="authenticationManager" ref="myAuthenticationManager"/>-->
-    <!--<property name="securityMetadataSource" ref="resourceSecurityMetadataSource"/>-->
-    <!--</bean>-->
-
-    <!--方法拦截器 start-->
-    <!--<bean id="methodSecurityInterceptor"-->
-    <!--class="org.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor">-->
-    <!--<property name="accessDecisionManager" ref="accessDecisionManager"/>-->
-    <!--<property name="authenticationManager" ref="myAuthenticationManager"/>-->
-    <!--<property name="securityMetadataSource" ref="methodSecurityMetadataSource"/>-->
-    <!--</bean>-->
-    <!--<aop:config>-->
-    <!--<aop:advisor advice-ref="methodSecurityInterceptor" pointcut="execution(* com.magic.rent.service.*.*(..))"-->
-    <!--order="1"/>-->
-    <!--</aop:config>-->
-    <!--方法拦截器 end-->
-
-
-    <!--session管理器 start-->
-    <!--<bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">-->
-    <!--<constructor-arg name="sessionRegistry" ref="sessionRegistry"/>-->
-    <!--<constructor-arg name="expiredUrl" value="/user/timeout"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="concurrentSessionControlStrategy"-->
-    <!--class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">-->
-    <!--<constructor-arg name="sessionRegistry" ref="sessionRegistry"/>-->
-    <!--<property name="maximumSessions" value="1"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>-->
-    <!--session管理器 end-->
 
 </beans>

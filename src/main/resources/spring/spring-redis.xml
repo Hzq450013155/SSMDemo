@@ -3,19 +3,35 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- 配置JedisConnectionFactory -->
-    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+    <!--设置jedisPool链接池的配置-->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.maxTotal}"/>
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <property name="minIdle" value="${redis.minIdle}"/>
+        <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
+        <property name="maxWaitMillis" value="${redis.maxWait}"/>
+    </bean>
+
+    <!--spring-data-redis2.0以上的配置-->
+    <bean id="redisStandaloneConfiguration"
+          class="org.springframework.data.redis.connection.RedisStandaloneConfiguration">
         <property name="hostName" value="${redis.host}"/>
         <property name="port" value="${redis.port}"/>
-        <property name="password" value="${redis.pass}"/>
+        <property name="password" ref="redisPassword"/>
         <property name="database" value="${redis.dbIndex}"/>
-        <property name="poolConfig">
-            <bean class="redis.clients.jedis.JedisPoolConfig">
-                <property name="maxIdle" value="999"/>
-                <property name="maxTotal" value="9999"/>
-                <property name="minIdle" value="20"/>
-            </bean>
-        </property>
+    </bean>
+    <!--redis链接密码-->
+    <bean id="redisPassword" class="org.springframework.data.redis.connection.RedisPassword">
+        <constructor-arg name="thePassword" value="${redis.pass}"/>
+    </bean>
+    <!-- 配置JedisConnectionFactory -->
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <constructor-arg name="standaloneConfig" ref="redisStandaloneConfiguration"/>
+        <!--2.0版本以下配置方式-->
+        <!--<property name="hostName" value="${redis.host}"/>-->
+        <!--<property name="port" value="${redis.port}"/>-->
+        <!--<property name="password" value="${redis.pass}"/>-->
+        <!--<property name="database" value="${redis.dbIndex}"/>-->
     </bean>
 
     <!-- StringRedisSerializer -->
@@ -32,28 +48,32 @@
     </bean>
 
     <!-- 配置RedisCacheManager -->
-    <bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
-        <constructor-arg name="redisOperations" ref="redisTemplate"/>
-        <property name="defaultExpiration" value="${redis.expiration}"/>
-    </bean>
+    <!--<bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">-->
+    <!--<constructor-arg name="redisOperations" ref="redisTemplate"/>-->
+    <!--<property name="defaultExpiration" value="${redis.expiration}"/>-->
+    <!--</bean>-->
 
-    <!-- 这里的是为了下面的 Session策略过滤器提供构造函数传入的参数，因为Session过滤器要依赖该对象来构造，所以创建一个先 -->
-    <bean name="redisOperationsSessionRepository"
-          class="org.springframework.session.data.redis.RedisOperationsSessionRepository">
-        <constructor-arg ref="jedisConnectionFactory"/>
-        <property name="defaultMaxInactiveInterval" value="86400"/>
+    <!--spring-session-data-redis 2.2.0-->
+    <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
+        <property name="maxInactiveIntervalInSeconds" value="3600"/>
     </bean>
+    <!-- 这里的是为了下面的 Session策略过滤器提供构造函数传入的参数 -->
+    <!--<bean name="redisOperationsSessionRepository"-->
+    <!--class="org.springframework.session.data.redis.RedisOperationsSessionRepository">-->
+    <!--<constructor-arg ref="jedisConnectionFactory"/>-->
+    <!--<property name="defaultMaxInactiveInterval" value="86400"/>-->
+    <!--</bean>-->
 
     <!-- 这个是Session策略过滤器，即将容器原有的Session持久化机制，代替为Spring的 Redis持久化Session机制。 -->
     <!-- 注意，这个名字与 web.xml里的targetBean的下value是要一致的。 -->
-    <bean name="springSession" class="org.springframework.session.web.http.SessionRepositoryFilter">
-        <constructor-arg ref="redisOperationsSessionRepository"/>
-        <property name="httpSessionStrategy" ref="cookieHttpSessionStrategy"/>
-    </bean>
+    <!--<bean name="springSession" class="org.springframework.session.web.http.SessionRepositoryFilter">-->
+    <!--<constructor-arg ref="redisOperationsSessionRepository"/>-->
+    <!--<property name="httpSessionStrategy" ref="cookieHttpSessionStrategy"/>-->
+    <!--</bean>-->
 
-    <bean id="cookieHttpSessionStrategy" class="org.springframework.session.web.http.CookieHttpSessionStrategy">
-        <property name="cookieName" value="SESSIONID_SSM"/>
-    </bean>
+    <!--<bean id="cookieHttpSessionStrategy" class="org.springframework.session.web.http.CookieHttpSessionStrategy">-->
+    <!--<property name="cookieName" value="SESSIONID_SSM"/>-->
+    <!--</bean>-->
 
 
 </beans>

@@ -34,20 +34,6 @@
         }
     </style>
     <script>
-        $(function () {
-            changeWH();
-        });
-
-        function changeWH() {
-
-            // $("#myiframe").height($(".col-lg-9").height());
-            $("#myiframe").width($(".col-lg-10").width());
-        }
-
-        window.onresize = function () {
-            changeWH();
-
-        };
 
         function changeSrc(url) {
             $('iframe').attr('src', url)
@@ -59,19 +45,18 @@
     <a id="logout" class="btn btn-danger" href="/logout">注销</a>
 </div>
 <div class="container">
-    <div class="row">
+    <div>
         <div class="col-lg-2">
             <ul class="nav nav-pills nav-stacked">
                 <li role="presentation" class="active"><a href="#" onclick="changeSrc('/todo/getList')">待办事项列表</a>
                 </li>
-                <li role="presentation"><a href="#" onclick="changeSrc('/WEB-INF/views/infoMaintenance.jsp')">个人信息维护</a>
+                <li role="presentation"><a href="#" onclick="changeSrc('/infoMaintenance.html')">个人信息维护</a>
                 </li>
             </ul>
         </div>
         <div class="col-lg-10">
-            <iframe src="/todoItemController/getList" id="myiframe1" frameborder="0" id="myiframe" height="500"
-                    width="100%"></iframe>
-            <!--<iframe src="/todoItemController/toTodoList" frameborder="0" id="myiframe1" height="500"></iframe>-->
+            <iframe src="/todo/getList" id="myiframe1" frameborder="0" id="myiframe" height="500" width="100%"
+                    scrolling="no"></iframe>
         </div>
     </div>
 </div>

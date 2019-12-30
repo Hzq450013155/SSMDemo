@@ -1,10 +1,8 @@
-<!--<%@ page contentType="text/html;charset=UTF-8" language="java" %>-->
-<!--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>-->
-<!--<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>-->
-<html>
+<!doctype html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>待办管理系统</title>
+    <title>待办项</title>
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
     <script src="/static/js/JQuery.js"></script>
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
@@ -37,7 +35,7 @@
         if ($("#form-div").css("display") == "none") {
             $("#form-div").show();
             $("#myform")[0].reset();
-            $("#myform").attr('action', "/todoItemController?insert");
+            $("#myform").attr('action', "/todo/insert");
         } else {
             $("#form-div").hide();
         }
@@ -46,7 +44,7 @@
     function edit(i) {
         $("#form-div").show();
         $("#myform")[0].reset();
-        $("#myform").attr('action', "/todoItemController?update");
+        $("#myform").attr('action', "/todo/update");
         $("#todoItemId").val(datas[i].todoItemId);
         $("#todoItemTitle").val(datas[i].todoItemTitle);
         $("#todoItemContent").val(datas[i].todoItemContent);
@@ -68,7 +66,7 @@
     function del(todoItemId) {
         if (confirm("确定删除吗？") == true) {
             $.ajax({
-                url: "/todoItemController?delete",
+                url: "/todo/delete",
                 type: 'post',
                 data: {
                     todoItemId: todoItemId
@@ -108,7 +106,7 @@
 <button class="btn btn-default" onclick="edit()">修改</button>
 <button class="btn btn-default" onclick="del()">删除</button>
 <div id="form-div">
-    <form id="myform" class="form-horizontal" action="/todoItemController?insert" method="post" style="width: 500px;">
+    <form id="myform" class="form-horizontal" action="/todo/insert" method="post" style="width: 500px;">
         <input type="hidden" name="todoItemId" id="todoItemId">
         <div class="form-group">
             <label for="todoItemTitle" class="col-sm-4 control-label">待办事项标题：</label>
@@ -176,13 +174,13 @@
     <#list page.list! as item>
         <tr>
             <td style="display: none;">${item.todoItemId}</td>
-            <td style="display: none;">${item.userId}</td>
+            <td style="display: none;">${item.userId!}</td>
             <td>${item_index+1}</td>
             <td>${item.todoItemTitle}</td>
             <td>${item.todoItemContent}</td>
             <td>${item.priority}</td>
-            <td>${item.creationDate?datetime}</td>
-            <td>${item.lastUpdateDate?datetime}</td>
+            <td>${(item.creationDate?datetime)!}</td>
+            <td>${(item.lastUpdateDate?datetime)!}</td>
             <td>${item.comments}</td>
             <td>
                 <button class="btn btn-default" onclick="edit(${item})">修改</button>

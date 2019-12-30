@@ -12,7 +12,7 @@
             的类似映射。 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
         <setting name="lazyLoadingEnabled" value="false"/>
-        <setting name="logImpl" value="LOG4J"/>
+        <!--<setting name="logImpl" value="LOGBACK"/>-->
 
     </settings>
 
