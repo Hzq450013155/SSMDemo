@@ -1,12 +1,12 @@
 ### WebProject
 SSM搭建实例
 
-使用Spring+SpringMVC+Mybatis搭建JAVA WEB 项目一例。
+基于Spring 5、SpringMVC、Mybatis搭建JAVA WEB 项目一例。
 
 #### 技术栈：
-- Spring
+- Spring 5.2.1
 - Spring-Mvc
-- Spring-Security
+- Spring-Security 5.2.1
 - Mybatis
 - AOP
 

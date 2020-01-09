@@ -13,7 +13,6 @@ public class BaseException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    // e.g. ORDER_FROZEN
     private String code;
 
     private String descriptionKey;

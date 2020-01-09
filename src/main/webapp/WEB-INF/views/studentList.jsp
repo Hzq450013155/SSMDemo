@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>ceshi</title>
-    <script src="/static/js/JQuery.js" type="javascript"></script>
+    <script src="/resources/js/JQuery.js" type="javascript"></script>
 </head>
 <body>
 <table>

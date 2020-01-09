@@ -1,5 +1,6 @@
 package com.ssm.security;
 
+import com.ssm.common.exception.UserException;
 import com.ssm.core.entity.User;
 import com.ssm.core.service.UserService;
 import org.slf4j.Logger;
@@ -53,11 +54,11 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @param user
      */
     private void checkUserException(User user) {
-//        UserException ue = null;
+        UserException ue = null;
 //        if (User.STATUS_LOCK.equalsIgnoreCase(user.getStatus())) {
 //            ue = new UserException(UserException.ERROR_USER_LOCKED, null);
 //        } else
-//            if (user.getStartActiveDate() != null
+//        if (user.getStartActiveDate() != null
 //                && user.getStartActiveDate().getTime() > System.currentTimeMillis()) {
 //            ue = new UserException(UserException.ERROR_USER_NOT_ACTIVE, null);
 //        } else if (user.getEndActiveDate() != null && user.getEndActiveDate().getTime() < System.currentTimeMillis()) {

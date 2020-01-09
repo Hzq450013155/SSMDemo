@@ -5,23 +5,21 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
-         http://www.springframework.org/schema/aop
-         http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
-
-
-           http://www.springframework.org/schema/context
-         http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
 
 
     <!--启用@AsjectJ支持-->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     <!-- 配置文件config.properties -->
-    <context:property-placeholder location="classpath:config.properties"/>
+    <context:property-placeholder location="classpath:config.properties" ignore-unresolvable="true"
+                                  local-override="true" ignore-resource-not-found="true"/>
 
     <!--组件扫描，加载除controller外的bean，controller交给mvc管理-->
     <context:component-scan base-package="com.ssm.*">
-        <context:exclude-filter type="annotation"
-                                expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
     <context:annotation-config/>

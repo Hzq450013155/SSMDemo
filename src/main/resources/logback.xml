@@ -4,10 +4,10 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>DEBUG</level>
         </filter>
-        <layout class="ch.qos.logback.classic.PatternLayout">
+        <Encoding>UTF-8</Encoding>
+        <encoder class="ch.qos.logback.classic.PatternLayout">
             <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
-            <charset>UTF-8</charset>
-        </layout>
+        </encoder>
     </appender>
 
     <root level="debug">

@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <title>待办项</title>
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-    <script src="/static/js/JQuery.js"></script>
+    <script src="/resources/js/JQuery.js"></script>
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/resources/js/bootstrap.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
 
@@ -187,8 +187,7 @@
                 <button class="btn btn-default" onclick="del(${item.todoItemId})">删除</button>
             </td>
         </tr>
-    </
-    #list>
+    </#list>
     </tbody>
 </table>
 <div class="row">
@@ -198,35 +197,30 @@
     <div class="col-md-6">
         <nav aria-label="Page navigation">
             <ul class="pagination">
-                <#if page.hasPreviousPage>
-                    <li><a href="/todo/getList?pn=1">首页</a></li>
-                    <li>
-                        <a href="/todo/getList?pn=${page.pageNum-1}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-            </
-            #if>
+            <#if page.hasPreviousPage>
+                <li><a href="/todo/getList?pn=1">首页</a></li>
+                <li>
+                    <a href="/todo/getList?pn=${page.pageNum-1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            </#if>
             <#list page.navigatepageNums as pageNum>
-            <#if page.pageNum==pageNum>
-                        <li class="active"><a href="#">${pageNum}</a></li>
-        </
-        #if>
-        <#if page.pageNum!=pageNum>
-                        <li><a href="/todo/getList?pn=${pageNum}">${pageNum}</a></li>
-    </
-    #if>
-</
-#list>
-<#if page.hasNextPage>
-                    <li>
-                        <a href="/todo/getList?pn=${page.pageNum+1}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                    <li><a href="/todo/getList?pn=${page.pages}">末页</a></li>
-</
-#if>
+                <#if page.pageNum==pageNum>
+                    <li class="active"><a href="#">${pageNum}</a></li>
+                </#if>
+                <#if page.pageNum!=pageNum>
+                    <li><a href="/todo/getList?pn=${pageNum}">${pageNum}</a></li>
+                </#if>
+            </#list>
+            <#if page.hasNextPage>
+                <li>
+                    <a href="/todo/getList?pn=${page.pageNum+1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li><a href="/todo/getList?pn=${page.pages}">末页</a></li>
+            </#if>
             </ul>
         </nav>
     </div>

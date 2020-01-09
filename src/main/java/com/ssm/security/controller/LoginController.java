@@ -1,8 +1,9 @@
 package com.ssm.security.controller;
 
+import com.ssm.common.exception.BaseException;
+import com.ssm.common.exception.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Locale;
 
 /**
  * Copyright (c) 2019. Hand Enterprise Solution Company. All right reserved.
@@ -36,7 +36,7 @@ public class LoginController {
      * @param response HttpServletResponse
      * @return view
      */
-    @RequestMapping(value = {"/login.html", "/login"})
+    @RequestMapping(value = "login")
     public ModelAndView loginView(final HttpServletRequest request, final HttpServletResponse response) {
         ModelAndView view = new ModelAndView("/login");
         Boolean error = (Boolean) request.getAttribute("error");
@@ -45,15 +45,14 @@ public class LoginController {
         while (exception != null && exception.getCause() != null) {
             exception = exception.getCause();
         }
-//        String code = UserException.ERROR_USER_PASSWORD;
-//        if (exception instanceof BaseException) {
-//            code = ((BaseException) exception).getDescriptionKey();
-//        }
+        String code = UserException.ERROR_USER_PASSWORD;
+        if (exception instanceof BaseException) {
+            code = ((BaseException) exception).getDescriptionKey();
+        }
 
         if (error != null && error) {
-            String msg = null;
-            Locale locale = RequestContextUtils.getLocale(request);
-            msg = messageSource.getMessage(new DefaultMessageSourceResolvable("AccountStatusUserDetailsChecker.locked"), locale);
+            //根据错误代码从消息源获取报错信息，返回给前台
+            String msg = messageSource.getMessage(new DefaultMessageSourceResolvable(code), RequestContextUtils.getLocale(request));
             view.addObject("msg", msg);
         }
         return view;

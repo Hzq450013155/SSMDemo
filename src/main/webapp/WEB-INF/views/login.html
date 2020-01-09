@@ -3,7 +3,7 @@
 <head>
     <title>待办事项后台管理</title>
     <!-- Custom Theme files -->
-    <link href="/static/css/login.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="/resources/css/login.css" rel="stylesheet" type="text/css" media="all"/>
     <!-- Custom Theme files -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -18,8 +18,7 @@
         <div class="alert-error">
             <span>${msg}</span>
         </div>
-    </
-    #if>
+    </#if>
     <form method="post" action="/login" id="myform">
         <input type="text" value="User Id" name="username" onfocus="this.value = '';"
                onblur="if (this.value == '') {this.value = 'User Id';}">
@@ -31,10 +30,10 @@
             <input type="submit" value="Login">
         </div>
     </form>
-    </div>
-    <div class="login-bottom">
-        <h3>New User &nbsp;<a href="#">Register</a>&nbsp Here</h3>
-    </div>
+</div>
+<div class="login-bottom">
+    <h3>New User &nbsp;<a href="#">Register</a>&nbsp Here</h3>
+</div>
 </div>
 <div class="copyright">
     <p>Copyright &copy; 2015.zzh All rights reserved.</p>

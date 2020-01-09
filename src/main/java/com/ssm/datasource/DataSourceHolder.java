@@ -9,7 +9,7 @@ package com.ssm.datasource;
  */
 public class DataSourceHolder {
 
-    private static final ThreadLocal contextHolder = new ThreadLocal();
+    private static final ThreadLocal<DataSourceType> contextHolder = new ThreadLocal();
 
     /**
      * @param dataSourceType 数据库类型
